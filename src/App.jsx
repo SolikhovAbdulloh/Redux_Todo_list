@@ -34,9 +34,11 @@ function App() {
   );
 
   const saveFuc = () => {
-    dispatch(updateTodo({ id: selectTodo.id, todo: newtodo }));
-    setSelect(null)
-    setnewtodo('')
+    if(selectTodo){
+      dispatch(updateTodo({ id: selectTodo.id, todo: newtodo }));
+      setSelect(null)
+      setnewtodo("")
+    }
   };
 
   return (
@@ -44,9 +46,11 @@ function App() {
       <h1 className="text-center text-[20px] font-bold text-[green]">
         Todo-list
       </h1>
-      <div className=" flex w-full justify-center mt-5">
+      <div className=" flex w-full gap-2 items-center justify-center mt-5">
+        <label>Search</label>
+
         <input
-          className="bg-[black] text-white px-3 w-[90vh]  rounded-2xl h-[50px]"
+          className="bg-[#e6e6e6] text-black px-3 w-[90vh]  rounded-2xl h-[50px]"
           value={search}
           onChange={FuctionSearch}
         />
@@ -54,12 +58,12 @@ function App() {
       <form onSubmit={handleSubmit(submit)}>
         <div className="flex   items-center m-auto w-[60%] mt-10">
           <input
-            className="bg-[grey] m-auto w-[70%] h-[50px] p-3 rounded-xl"
+            className="bg-[#d2d0d0] text-black m-auto w-[70%] h-[50px] p-3 rounded-xl"
             {...register("todo", { required: true })}
           />
-          <button className="w-[80px]  h-[50px]  rounded-3xl flex items-center justify-center">
-            <IoMdAddCircle className="text-[40px]" />
-          </button>
+          <button className="w-[80px] bg-[#00ddff] h-[50px]  rounded-3xl flex items-center justify-center">
+                  Add
+            </button>
         </div>
         {errors.todo && (
           <p className="font-normal m-auto flex justify-center items-center text-[18px] text-red-500">
@@ -82,10 +86,15 @@ function App() {
           >
             <MdDelete />
           </button>
-          <button onClick={()=>{ setSelect(e), setnewtodo(e.todo)}} className="edit-button">
-            <MdModeEdit />
+          <button
+            onClick={() => {
+              setSelect(e), setnewtodo(e.todo);
+            }}
+            className="edit-button"
+          >
+            <MdModeEdit/>
           </button>
-          {selectTodo && (
+          {selectTodo && selectTodo.id === e.id && (
             <div>
               <input
                 placeholder="Tahrir qilish"
